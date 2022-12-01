@@ -1,120 +1,119 @@
 1) Insert the following departments:
 a.
-    Computer science,
-    CS,
-    1167,
-    904-567-1234,
-    Engineering.
+Computer science
+CS
+1167
+904-567-1234
+Engineering.
 b.
-    Electrical Engineering,
-    EE,
-    1167,
-    904-567-1234,
-    Engineering.
+Electrical Engineering
+EE
+1167
+904-567-1234
+Engineering.
 2) Insert the following students
 a.
-    Alex Smith,
-    N02345678,
-    345-22-1567,
-    123 West Drive,
-    Jacksonville,
-    FL 36182,
-    094-123-6588,
-    123 West Drive,
-    Jacksonville,
-    FL 36182,
-    094-123-6588,0
-    8/12/2004,
-    Male,
-    Freshman,
-    CS,
-    EE,
-    B.S.
+Alex Smith
+N02345678
+345-22-1567
+123 West Drive
+Jacksonville
+FL 36182
+094-123-6588
+123 West Drive, Jacksonville, FL 36182
+094-123-65880
+8/12/2004
+Male
+Freshman
+CS
+EE
+B.S.
 3) Insert the following courses
 a.
-    Databases,
-    Introduce databases,
-    COP3703,
-    3,
-    CS.
+Databases
+Introduce databases
+COP3703
+3
+CS.
 
 b.
-    Circuits,
-    Learn circuits,
-    EE1345,
-    3,
-    EE.
+Circuits
+Learn circuits
+EE1345
+3
+EE.
 
 4) Insert the following instructors
 a.
-    Dan Peters,
-    N04567123,
-    250-36-7345,
-    125 South Drive,
-    Jacksonville,
-    FL
-    36182,
-    904-321-1250,
-    45,
-    5567
+Dan Peters
+N04567123
+250-36-7345
+125 South Drive
+Jacksonville
+FL
+36182
+904-321-1250
+45
+5567
 
 b.
-    John Doe,
-    N04567899,
-    245-33-6789,
-    345 East Drive,
-    Jacksonville,
-    FL
-        36182,
-        904-123-5678,
-        55,
-        2348
+John Doe
+N04567899
+245-33-6789
+345 East Drive
+Jacksonville
+FL
+36182
+904-123-5678
+55
+2348
+
 5) Search for courses offered by CS
 6) Insert the following sections
 a.
-    Dan Peters (NO4567123,
-    250-36-7345),
-    Fall,
-    2021,
-    COP3703,1
+Dan Peters (NO4567123
+250-36-7345)
+Fall
+2021
+COP37031
 
 
 b.
-    Dan Peters (N04567123,
-    250-36-7345),
-    Spring,
-    2021,
-    COP3703,1
+Dan Peters (N04567123
+250-36-7345)
+Spring
+2021
+COP37031
 
 c.
-    Dan Peters (N04567123,
-    250-36-7345),
-    Fall,
-    2021,
-    COP3703,2
+Dan Peters (N04567123
+250-36-7345)
+Fall
+2021
+COP37032
 
 d.
-    John Doe (NO4567123,
-    250-36-7345),
-    Fall,
-    2021,
-    EE1345,
-    1
+John Doe (NO4567123
+250-36-7345)
+Fall
+2021
+EE1345
+1
 7) Assign the above student to following sections and assign the following grades
 a.
-    N02345678 (or 345-22-1567),
-    Fall,
-    2021,
-    COP3703,
-    1,
-    A
+N02345678 (or 345-22-1567)
+Fall
+2021
+COP3703
+1
+A
 
 b.
-    N02345678 (or 345-22-1567),
-    Fall,
-    2021,
-    EE1345,
-    1,
-    C
+N02345678 (or 345-22-1567)
+Fall
+2021
+EE1345
+1
+C
 
 8) Generate the grade report for N02345678 (or 345-22-1567)

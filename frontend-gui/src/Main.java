@@ -341,14 +341,15 @@ public class Main {
 
         return pstmt;
     }
-    private static PreparedStatement listTaughtSections (Connection conn) throws SQLException {
+
+    private static PreparedStatement listTaughtSections(Connection conn) throws SQLException {
         PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM SECTION WHERE instructor = ?");
 
         return pstmt;
     }
 
     private static PreparedStatement listDeptCourses(Connection conn) throws SQLException {
-        PreparedStatement pstmt = conn.prepareStatement("Select * from COURSE where Offering_Dept = ?");
+        PreparedStatement pstmt = conn.prepareStatement("Select * from COURSE where  = ?");
         return pstmt;
     }
 
@@ -365,6 +366,8 @@ public class Main {
     private static void userOptions(Connection conn) {
         String option = "";
 
+        PreparedStatement pstmt = null;
+
         Scanner in = new Scanner(System.in);
 
         while (!option.equals("7")) {
@@ -379,6 +382,7 @@ public class Main {
                         "6. Add a grade to a given student for a given course/section.\n" +
                         "7. Exit\n");
 
+                System.out.print("-> ");
                 option = in.nextLine();
 
                 switch (option) {
