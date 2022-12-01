@@ -141,8 +141,27 @@ public class Main {
     }
 
     public static PreparedStatement addSection(Connection conn) throws SQLException {
-        PreparedStatement pstmt = null;
+        PreparedStatement pstmt = conn.prepareStatement(
+            "INSERT INTO SECTION (COURSE_NO, SECTION_NO, INSTRUCTOR, SEMESTER, YEAR)" + "VALUES (?, ?, ?, ?, ?)");
+    System.out.println("Enter the Course Number: ");
+    String courseNo = getString();
+    System.out.println("Enter the Section Number");
+    String sectionNo = getString();
+    System.out.println("Enter the N_Number of the Instructor:");
+    String nNumber = getString();
+    System.out.println("Enter the Semester");
+    String semester = getString();
+    System.out.println("Enter the Year");
+    String year = getString();
 
+    pstmt.setString(1, courseNo);
+    pstmt.setString(2, sectionNo);
+    pstmt.setString(3, nNumber);
+    pstmt.setString(4, semester);
+    pstmt.setString(5, year);
+
+    int rowsAdded = pstmt.executeUpdate();
+    System.out.println("\n" + rowsAdded + " section added to the table");
         return pstmt;
     }
 
@@ -343,12 +362,23 @@ public class Main {
     }
     private static PreparedStatement listTaughtSections (Connection conn) throws SQLException {
         PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM SECTION WHERE instructor = ?");
+		System.out.print("Enter the Instructor's N_Number: ");
+		String nNumber = getString();
+		pstmt.setString(1, nNumber);
+
 
         return pstmt;
     }
 
     private static PreparedStatement listDeptCourses(Connection conn) throws SQLException {
         PreparedStatement pstmt = conn.prepareStatement("Select * from COURSE where Offering_Dept = ?");
+		System.out.print("Enter the department code: ");
+		String deptName = getString();
+		pstmt.setString(1, deptName);
+		
+		displayResultSet(pstmt.executeQuery());
+		
+        
         return pstmt;
     }
 
