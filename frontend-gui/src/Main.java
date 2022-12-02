@@ -80,13 +80,14 @@ public class Main {
                 System.out.print(",");
             System.out.print(rsmd.getColumnLabel(i));
         }
-        System.out.println("\n----------------");
+        System.out.println("\n-------------------------------------");
         while (rs.next()) {
             for (i = 1; i <= numCols; i++) {
-                // if (i > 1)
-                System.out.printf("%-15s|", rs.getString(i));
-                System.out.println("\n----------------");
+                if (i > 1)
+                    System.out.print(",");
+                System.out.print(rs.getString(i));
             }
+            System.out.println("");
         }
     }
 
@@ -357,7 +358,8 @@ public class Main {
     }
 
     public static PreparedStatement getStudentGPA(Connection conn) throws SQLException {
-        ArrayList<String> grades = new ArrayList<String>();
+        ArrayList<String> table = new ArrayList<String>();
+        String[][] gradeReportTable = new String[2][6];
 
         HashMap<String, Float> gradeValues = new HashMap<String, Float>();
 
@@ -374,26 +376,87 @@ public class Main {
         gradeValues.put("F", 0.0f);
 
         PreparedStatement pstmt = conn.prepareStatement(
-                "SELECT grade_earned " +
-                        "FROM ENROLLED_IN " +
-                        "WHERE n_number = ?");
+                "SELECT DISTINCT pname, enrolled_in.* " +
+                        "FROM person,enrolled_in,course " +
+                        "WHERE enrolled_in.n_number=? AND person.n_number=?");
 
         System.out.print("Enter student's n-number: ");
-        String nNumber = getString();
+        // String nNumber = getString();
+        String nNumber = "N02345678";
 
         pstmt.setString(1, nNumber);
+        pstmt.setString(2, nNumber);
 
         ResultSet rs = pstmt.executeQuery();
 
-        int i = 0;
+        // displayResultSet(rs);
+
+        int row = 0;
 
         while (rs.next()) {
-            grades.add(rs.getString(1));
+            String grade = rs.getString("pname");
+            gradeReportTable[row][0] = grade;
+            String n_number = rs.getString("n_number");
+            gradeReportTable[row][1] = n_number;
+            String course_number = rs.getString("course_number");
+            gradeReportTable[row][2] = course_number;
+            String grade_earned = rs.getString("grade_earned");
+            gradeReportTable[row][3] = grade_earned;
+            String semester = rs.getString("semester");
+            gradeReportTable[row][4] = semester;
+            String year = rs.getString("year");
+            gradeReportTable[row][5] = year;
+
+            row++;
         }
 
-        grades.size();
+        ArrayList<String> grades = new ArrayList<String>();
+        for (int i = 0; i < row; i++) {
+            grades.add(gradeReportTable[i][3]);
+        }
+
+        for (int j = 0; j < row; j++) {
+            try {
+                for (int k = 0; k < gradeReportTable[j].length; k++) {
+                    table.add(gradeReportTable[j][k]);
+
+                }
+                System.out.println();
+            } catch (NullPointerException e) {
+                break;
+            }
+        }
+
+        for (int i = 0; i < table.size(); i++) {
+            System.out.print(" | ");
+            System.out.print(table.get(i) + " | ");
+            if (((i + 1) % 6 == 0)) {
+                System.out.println();
+            }
+        }
+
+        int numRows = 0;
+
+        while (rs.next()) {
+            numRows += 1;
+        }
+
+        int numClasses = grades.size();
+
+        System.out.println("Number of classes: " + numClasses);
 
         System.out.println("Grades: " + grades);
+
+        float totalGradePoints = 0;
+
+        for (int i = 0; i < grades.size(); i++) {
+            float classPoints = gradeValues.get(grades.get(i));
+            totalGradePoints += classPoints;
+        }
+
+        float gpa = totalGradePoints / numClasses;
+
+        System.out.println("GPA: " + gpa);
 
         return pstmt;
     }
@@ -452,7 +515,8 @@ public class Main {
                         "7. Exit\n");
 
                 System.out.print("-> ");
-                option = in.nextLine();
+                // option = in.nextLine();
+                option = "3";
 
                 switch (option) {
                     case "1":
@@ -465,6 +529,7 @@ public class Main {
                         break;
                     case "3":
                         getStudentGPA(conn);
+                        System.out.println();
                         break;
                     case "4":
                         pstmt = listTaughtSections(conn);
