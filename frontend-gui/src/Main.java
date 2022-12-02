@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main {
@@ -78,14 +80,13 @@ public class Main {
                 System.out.print(",");
             System.out.print(rsmd.getColumnLabel(i));
         }
-        System.out.println("\n-------------------------------------");
+        System.out.println("\n----------------");
         while (rs.next()) {
             for (i = 1; i <= numCols; i++) {
-                if (i > 1)
-                    System.out.print(",");
-                System.out.print(rs.getString(i));
+                // if (i > 1)
+                System.out.printf("%-15s|", rs.getString(i));
+                System.out.println("\n----------------");
             }
-            System.out.println("");
         }
     }
 
@@ -331,8 +332,8 @@ public class Main {
 
     private static void addStudentToClass(Connection conn) throws SQLException {
         PreparedStatement pstmt = conn.prepareStatement(
-                "INSERT INTO ENROLLED_IN  (N_NUMBER, COURSE_NUMBER)" +
-                        "VALUES (?, ?)");
+                "INSERT INTO ENROLLED_IN  (N_NUMBER, COURSE_NUMBER, GRADE_EARNED, SEMESTER, YEAR)" +
+                        "VALUES (?, ?, ?, ?, ?)");
 
         System.out.println("Enter n-number: ");
         String nNumber = getString();
@@ -356,13 +357,53 @@ public class Main {
     }
 
     public static PreparedStatement getStudentGPA(Connection conn) throws SQLException {
-        PreparedStatement pstmt = conn.prepareStatement("");
+        ArrayList<String> grades = new ArrayList<String>();
+
+        HashMap<String, Float> gradeValues = new HashMap<String, Float>();
+
+        gradeValues.put("A", 4.0f);
+        gradeValues.put("A-", 3.7f);
+        gradeValues.put("B+", 3.3f);
+        gradeValues.put("B", 3.0f);
+        gradeValues.put("B-", 2.7f);
+        gradeValues.put("C+", 2.3f);
+        gradeValues.put("C", 2.0f);
+        gradeValues.put("C-", 1.7f);
+        gradeValues.put("D+", 1.3f);
+        gradeValues.put("D", 1.0f);
+        gradeValues.put("F", 0.0f);
+
+        PreparedStatement pstmt = conn.prepareStatement(
+                "SELECT grade_earned " +
+                        "FROM ENROLLED_IN " +
+                        "WHERE n_number = ?");
+
+        System.out.print("Enter student's n-number: ");
+        String nNumber = getString();
+
+        pstmt.setString(1, nNumber);
+
+        ResultSet rs = pstmt.executeQuery();
+
+        int i = 0;
+
+        while (rs.next()) {
+            grades.add(rs.getString(1));
+        }
+
+        grades.size();
+
+        System.out.println("Grades: " + grades);
 
         return pstmt;
     }
 
     private static PreparedStatement listTaughtSections(Connection conn) throws SQLException {
-        PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM SECTION WHERE instructor = ?");
+        PreparedStatement pstmt = conn.prepareStatement(
+                "SELECT * " +
+                        "FROM SECTION" +
+                        "WHERE instructor = ?");
+
         System.out.print("Enter the Instructor's N_Number: ");
         String nNumber = getString();
         pstmt.setString(1, nNumber);
@@ -400,8 +441,8 @@ public class Main {
 
         while (!option.equals("7")) {
             try {
-
-                System.out.print("What would you like to do?\n" +
+                System.out.print("\n" +
+                        "What would you like to do?\n" +
                         "1. Add a new entity to the database\n" +
                         "2. Add a student to a course\n" +
                         "3. Given a student's Nnumber generate their grade report. \n" +
@@ -426,9 +467,9 @@ public class Main {
                         getStudentGPA(conn);
                         break;
                     case "4":
-                        // TODO
                         pstmt = listTaughtSections(conn);
-                        pstmt.executeQuery();
+                        ResultSet rs = pstmt.executeQuery();
+                        displayResultSet(rs);
                         break;
                     case "5":
                         // COMPLETED
@@ -450,8 +491,8 @@ public class Main {
             } catch (SQLException e) {
                 printSQLExceptions(e);
             }
-            in.close();
         }
+        in.close();
     }
 
     public static void main(String[] args) {
